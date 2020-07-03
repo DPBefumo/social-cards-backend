@@ -13,11 +13,11 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 COLOR_CHOICES = {
-    ('', ''),
-    ('', ''),
-    ('', ''),
-    ('', ''),
-    ('', ''),
+    ('Ash Gray', 'Ash Gray'),
+    ('Gunmetal', 'Gunmetal'),
+    ('Baby Powder', 'Baby Powder'),
+    ('Indigo Dye', 'Indigo Dye'),
+    ('Ivory', 'Ivory'),
 }
 
 BORDER_CHOICES = {
@@ -41,9 +41,9 @@ class Card(models.Model):
     time_stamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     inner_message = models.CharField(max_length=255, null=True, blank=True)
     outer_message = models.CharField(max_length=255, null=True, blank=True)
-    color = models.CharField(max_length=10, choices=COLOR_CHOICES, default='')
-    border = models.CharField(max_length=10, choices=BORDER_CHOICES, default='')
-    font = models.CharField(max_length=10, choices=FONT_CHOICES, default='')
+    color = models.CharField(max_length=100, choices=COLOR_CHOICES, default='Baby Powder')
+    border = models.CharField(max_length=100, choices=BORDER_CHOICES, default='')
+    font = models.CharField(max_length=100, choices=FONT_CHOICES, default='')
 
 
 
