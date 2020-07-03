@@ -18,19 +18,19 @@ class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def my_cards(self, request):
         cards = request.user.cards.all()
         serializer = CardSerializer(cards, many=True)
         return Response(serializer.data)
     #need to adjust for friends cards
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def follows_cards(self, request):
         cards = request.user.cards.all()
         serializer = CardSerializer(cards, many=True)
         return Response(serializer.data)
     #need to adjust for all cards
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def all_cards(self, request):
         cards = Card.objects.all()
         serializer = CardSerializer(cards, many=True)
