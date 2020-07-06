@@ -19,8 +19,7 @@ class CardSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Card
         fields = [
-            'inner_message',
-            'outer_message',
+            'message',
             'color',
             'border',
             'font',
