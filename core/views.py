@@ -29,7 +29,7 @@ class CardViewSet(viewsets.ModelViewSet):
         cards = request.user.cards.all()
         serializer = CardSerializer(cards, many=True)
         return Response(serializer.data)
-    #need to adjust for all cards
+
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def all_cards(self, request):
         cards = Card.objects.all()
