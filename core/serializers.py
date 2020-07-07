@@ -20,6 +20,9 @@ class CardSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Card
         fields = [
+            'url',
+            'id',
+            'author',
             'message',
             'color',
             'border',

@@ -33,6 +33,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(followers, many=True, context={'request': request})
         return Response(serializer.data)
 
+
 class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
@@ -57,12 +58,26 @@ class CardViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(cards, many=True, context={'request': request})
         return Response(serializer.data)
 
+
 class FollowedView(views.APIView):
     permission_class =[permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        followers = [user.username for user in request.user.followed_user.all()]
+        return Response(followers)
 
     def post(self, request, format=None):
         name_of_user = request.data['user']
         user_to_follow = User.objects.get(username=name_of_user)
         current_user = request.user
         current_user.followed_user.add(user_to_follow)
+        return Response({"followed_user_count": current_user.followed_user.count()})
+
+class UnfollowView(views.APIView):
+    permission_class =[permissions.IsAuthenticated]
+
+    def post(self, request, name_of_user, format=None):
+        user_to_unfollow = User.objects.get(username=name_of_user)
+        current_user = request.user
+        current_user.followed_user.remove(user_to_unfollow)
         return Response({"followed_user_count": current_user.followed_user.count()})

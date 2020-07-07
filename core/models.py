@@ -25,7 +25,6 @@ BORDER_CHOICES = {
     ('solid', 'solid'),
     ('dotted', 'dotted'),
     ('ridge', 'ridge'),
-    ('none', 'none'),
 }
 
 FONT_CHOICES = {
@@ -39,9 +38,9 @@ class Card(models.Model):
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='cards', null=True)
     time_stamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     message = models.CharField(max_length=255, null=True, blank=True)
-    color = models.CharField(max_length=100, choices=COLOR_CHOICES, default='Baby Powder')
-    border = models.CharField(max_length=100, choices=BORDER_CHOICES, default='')
-    font = models.CharField(max_length=100, choices=FONT_CHOICES, default='')
+    color = models.CharField(max_length=100, choices=COLOR_CHOICES, default='', null=True)
+    border = models.CharField(max_length=100, choices=BORDER_CHOICES, default='', null=True)
+    font = models.CharField(max_length=100, choices=FONT_CHOICES, default='', null=True)
     #add in image part
 
 
