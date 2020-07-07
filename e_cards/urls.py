@@ -21,14 +21,15 @@ from rest_framework import routers
 from rest_framework.authtoken import views as authtoken_views
 
 router = routers.DefaultRouter()
-router.register('users', core_views.UserViewSet)
+router.register('users', core_views.UserViewSet, basename='user')
 router.register('cards', core_views.CardViewSet, basename='card')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/auth/', include('djoser.urls')),
+    path('api/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
+    # path('api/followed/', core_views.FollowedView, name='followed_view'),
 ]
 
 if settings.DEBUG:

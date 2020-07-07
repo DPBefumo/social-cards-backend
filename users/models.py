@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    follower = models.ManyToManyField('self', related_name='users')
+    followed_user = models.ManyToManyField(to='self', symmetrical=False, related_name='followers')
     # image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     first_name = models.CharField(max_length=100, null=True, blank=True)
     last_name = models.CharField(max_length=100, null=True, blank=True)
