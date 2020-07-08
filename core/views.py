@@ -11,11 +11,14 @@ from rest_framework.views import APIView
 
 # Create your views here.
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This ViewSet displays the users of the application.  The main view is of all users of the app.  Using the @action decorator, url paths have been added to be able to display the logged in user's profile page, who the user follows, and who follows the user.
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes =[permissions.IsAuthenticated]
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get', 'patch'])
     def profile_page(self, request):
         user = request.user
         serializer = UserSerializer(user, context={'request': request})
@@ -35,12 +38,18 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CardViewSet(viewsets.ModelViewSet):
+    """
+    This ViewSet displays the cards that have been added to the page. The main view is of the cards for the logged in user. Using the @action decorator, url paths have been created to have a view for displaying all of the cards on the app and the cards of users that the logged in user follows.
+    """
     serializer_class = CardSerializer
     permission_classes =[permissions.IsAuthenticated]
 
     def get_queryset(self):
         cards = self.request.user.cards.all()
         return cards
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
     @action(detail=False, methods=['get'])
     def all_cards(self, request):
@@ -64,6 +73,9 @@ class CardViewSet(viewsets.ModelViewSet):
 
 
 class FollowedListView(views.APIView):
+    """
+    This view is to display who the logged in user follows.
+    """
     permission_classes =[permissions.IsAuthenticated]
 
     def get(self, request, format=None):
@@ -79,6 +91,9 @@ class FollowedListView(views.APIView):
 
 
 class FollowedDetailView(views.APIView):
+    """
+    This view is to allow the logged in user to unfollow another user.  
+    """
     permission_classes =[permissions.IsAuthenticated]
 
     def get(self, request, name_of_user, format=None):

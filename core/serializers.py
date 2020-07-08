@@ -9,11 +9,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'id',
             'url',
-            # 'image',
             'username',
             'password',
+            'first_name',
+            'last_name',
             'bio',
             'followed_users',
+            'cards',
             'is_staff',
         ]
 
