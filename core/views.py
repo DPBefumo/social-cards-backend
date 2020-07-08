@@ -38,23 +38,13 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_class = CardSerializer
     permission_classes =[permissions.IsAuthenticated]
 
-    def queryset(self):
+    def get_queryset(self):
         cards = self.request.user.cards.all()
         return cards
 
     @action(detail=False, methods=['get'])
     def all_cards(self, request):
         cards = Card.objects.all()
-        page = self.paginate_queryset(cards)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = CardSerializer(cards, many=True, context={'request': request})
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['get'])
-    def my_cards(self, request):
-        cards = request.user.cards.all()
         page = self.paginate_queryset(cards)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
