@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     
     @action(detail=False, methods=['get'])
     def my_follows(self, request):
-        follows = request.user.followed_user.filter()
+        follows = request.user.followed_users.filter()
         serializer = UserSerializer(follows, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -35,9 +35,22 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CardViewSet(viewsets.ModelViewSet):
-    queryset = Card.objects.all()
     serializer_class = CardSerializer
     permission_classes =[permissions.IsAuthenticated]
+
+    def queryset(self):
+        cards = self.request.user.cards.all()
+        return cards
+
+    @action(detail=False, methods=['get'])
+    def all_cards(self, request):
+        cards = Card.objects.all()
+        page = self.paginate_queryset(cards)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = CardSerializer(cards, many=True, context={'request': request})
+        return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def my_cards(self, request):
@@ -46,7 +59,7 @@ class CardViewSet(viewsets.ModelViewSet):
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(cards, many=True, context={'request': request})
+        serializer = CardSerializer(cards, many=True, context={'request': request})
         return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
@@ -56,29 +69,37 @@ class CardViewSet(viewsets.ModelViewSet):
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(cards, many=True, context={'request': request})
+        serializer = CardSerializer(cards, many=True, context={'request': request})
         return Response(serializer.data)
 
 
-class FollowedView(views.APIView):
-    permission_class =[permissions.IsAuthenticated]
+class FollowedListView(views.APIView):
+    permission_classes =[permissions.IsAuthenticated]
 
     def get(self, request, format=None):
-        followers = [user.username for user in request.user.followed_user.all()]
+        followers = [user.username for user in request.user.followed_users.all()]
         return Response(followers)
 
     def post(self, request, format=None):
         name_of_user = request.data['user']
         user_to_follow = User.objects.get(username=name_of_user)
         current_user = request.user
-        current_user.followed_user.add(user_to_follow)
-        return Response({"followed_user_count": current_user.followed_user.count()})
+        current_user.followed_users.add(user_to_follow)
+        return Response({"followed_user_count": current_user.followed_users.count()})
 
-class UnfollowView(views.APIView):
-    permission_class =[permissions.IsAuthenticated]
 
-    def post(self, request, name_of_user, format=None):
+class FollowedDetailView(views.APIView):
+    permission_classes =[permissions.IsAuthenticated]
+
+    def get(self, request, name_of_user, format=None):
+        follower_to_view = User.objects.get(username=name_of_user)
+        serializer = UserSerializer(follower_to_view, context={'request': request})
+        return Response(serializer.data)
+
+    def delete(self, request, name_of_user, format=None):
         user_to_unfollow = User.objects.get(username=name_of_user)
         current_user = request.user
-        current_user.followed_user.remove(user_to_unfollow)
-        return Response({"followed_user_count": current_user.followed_user.count()})
+        current_user.followed_users.remove(user_to_unfollow)
+        return Response(request.data)
+
+

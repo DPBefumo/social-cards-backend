@@ -13,7 +13,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'username',
             'password',
             'bio',
-            'followed_user',
+            'followed_users',
             'is_staff',
         ]
 
