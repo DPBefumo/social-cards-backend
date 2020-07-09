@@ -42,7 +42,6 @@ FONT_CHOICES = (
 class Card(models.Model):
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='cards', null=True, editable=False)
     posted_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    image = models.ImageField(default='https://bulma.io/images/placeholders/1280x960.png', upload_to=None)
     message = models.CharField(max_length=255, null=True, blank=True)
     color = models.CharField(max_length=100, choices=COLOR_CHOICES, default='', null=True)
     border = models.CharField(max_length=100, choices=BORDER_CHOICES, default='', null=True)
