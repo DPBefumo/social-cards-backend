@@ -12,7 +12,9 @@ from rest_framework.views import APIView
 # Create your views here.
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This ViewSet displays the users of the application.  The main view is of all users of the app.  Using the @action decorator, url paths have been added to be able to display the logged in user's profile page, who the user follows, and who follows the user.
+    This ViewSet displays the users of the application.  The main view is of all users of 
+    the app.  Using the @action decorator, url paths have been added to be able to display 
+    the logged in user's profile page, who the user follows, and who follows the user.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -39,7 +41,10 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 class CardViewSet(viewsets.ModelViewSet):
     """
-    This ViewSet displays the cards that have been added to the page. The main view is of the cards for the logged in user. Using the @action decorator, url paths have been created to have a view for displaying all of the cards on the app and the cards of users that the logged in user follows.
+    This ViewSet displays the cards that have been added to the page. The main view 
+    is of the cards for the logged in user. Using the @action decorator, url paths have 
+    been created to have a view for displaying all of the cards on the app and the 
+    cards of users that the logged in user follows.
     """
     serializer_class = CardSerializer
     permission_classes =[permissions.IsAuthenticated]
