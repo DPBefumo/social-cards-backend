@@ -20,6 +20,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 class CardSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    
     class Meta:
         model = Card
         fields = [
