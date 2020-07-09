@@ -68,7 +68,7 @@ class CardViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def follower_cards(self, request):
-        cards = request.user.followers.all()
+        cards = request.user.followed_users.all()
         page = self.paginate_queryset(cards)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
