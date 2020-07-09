@@ -21,7 +21,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class CardSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    image_url = serializers.SlugRelatedField(read_only=True, slug_field="image")
+    image_url = serializers.ImageField('get_image_url')
     
     class Meta:
         model = Card
