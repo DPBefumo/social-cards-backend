@@ -18,7 +18,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
     permission_classes =[permissions.IsAuthenticated]
 
-    @action(detail=False, methods=['get', 'patch'])
+    @action(detail=False, methods=['get',: 'patch'])
     def profile_page(self, request):
         user = request.user
         serializer = UserSerializer(user, context={'request': request})
