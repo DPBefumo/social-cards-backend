@@ -29,8 +29,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
-    path('api/follow/', core_views.FollowedListView.as_view()),
-    path('api/follow/<str:name_of_user>/', core_views.FollowedDetailView.as_view()),
+    path('api/friends/', core_views.FollowedListView.as_view()),
+    path('api/friends/<str:name_of_user>/', core_views.FollowedDetailView.as_view()),
 ]
 
 if settings.DEBUG:
